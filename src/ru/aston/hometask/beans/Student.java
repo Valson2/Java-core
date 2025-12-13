@@ -61,7 +61,7 @@ public class Student {
 		if (getClass() != obj.getClass())
 			return false;
 		Student other = (Student) obj;
-		return age == other.age && Objects.equals(books, other.books) && Objects.equals(firstName, other.firstName)
+		return Objects.equals(books, other.books) && age == other.age && Objects.equals(firstName, other.firstName)
 				&& Objects.equals(lastName, other.lastName);
 	}
 
