@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter;
 
 import ru.aston.hometask.beans.Student;
 
-public class ConstantUtils {
+public abstract class ConstantUtils {
 	public final static String SEMICOLON_SEPARATOR = ";";
 	public final static String FILE_NAME = "src/resources/students.txt";
 	public final static String FILE_NOT_FOUND_MSG = "File is not found";
@@ -19,6 +19,4 @@ public class ConstantUtils {
 	public final static int FOURTH_FILE_ELEMENT = 3;
 	public final static int FIFTH_FILE_ELEMENT = 4;
 	public final static int SIXTH_FILE_ELEMENT = 5;
-	private ConstantUtils() {
-	}
 }
