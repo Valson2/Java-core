@@ -1,53 +1,46 @@
 package ru.aston.hometask.task;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class Runner {
 
-	static class Counter {
-		private volatile AtomicInteger value = new AtomicInteger(1);
-
-		public void increment() {
-			value.incrementAndGet();
-		}
-
-		public void decrement() {
-			value.decrementAndGet();
-		}
-	}
+	private static int count = 1;
+	private static final Object lock = new Object();
 
 	public static void main(String[] args) {
-		Counter counter = new Counter();
-
 		Thread thread1 = new Thread(() -> {
 			while (true) {
-				if (counter.value.get() == 1) {
-					System.out.println(counter.value);
-					counter.increment();
-					try {
-						Thread.sleep(500);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+				synchronized (lock) {
+					while (count != 1) {
+						try {
+							lock.wait();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
+					System.out.println(count);
+					count = 2;
+					lock.notify();
 				}
 			}
 		});
+
 		Thread thread2 = new Thread(() -> {
 			while (true) {
-				if (counter.value.get() == 2) {
-					System.out.println(counter.value);
-					counter.decrement();
-					try {
-						Thread.sleep(500);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+				synchronized (lock) {
+					while (count != 2) {
+						try {
+							lock.wait();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
+					System.out.println(count);
+					count = 1;
+					lock.notify();
 				}
 			}
 		});
 
 		thread1.start();
 		thread2.start();
-
 	}
 }
